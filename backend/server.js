@@ -3,9 +3,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/database');
 const authRoutes = require('./routes/auth'); // Import authentication routes
-const authMiddleware = require('./middleware/auth');
+const menuRoutes = require('./routes/menu');
+const cartRoutes = require('./routes/cart');
 const responseFormatter = require('./middleware/responseFormatter');
-const test = require('./routes/test');
 
 dotenv.config();
 
@@ -21,7 +21,8 @@ app.use(responseFormatter); // Apply response formatter middleware globally
 
 // Use authentication routes
 app.use('/api/auth', authRoutes); // Route for authentication-related endpoints
-app.use('/api/protected', authMiddleware, test);
+app.use('/api/menu', menuRoutes);  // Menu routes
+app.use('/api/cart', cartRoutes);  // Cart routes
 
 // Example route for testing
 app.get('/', (req, res) => {

@@ -1,28 +1,20 @@
-// middleware/responseFormatter.js
-
-const responseFormatter = (req, res, next) => {
-    // Store the original res.json function
+// middlewares/responseFormatter.js
+module.exports = (req, res, next) => {
     const originalJson = res.json;
 
-    // Override res.json
     res.json = function (body) {
-        // Define the basic response structure
-        const response = {
-            msg: body.message || 'Success', // Use the message if provided, or default to "Success"
-            status: res.statusCode,
+        const status = res.statusCode < 400 ? 'Success' : 'Error';
+        const statusCode = res.statusCode;
+
+        // Wrap response with top-level `msg`, `status`, and `data`
+        const formattedResponse = {
+            msg: status,
+            status: statusCode,
+            data: body
         };
 
-        // Only include `data` if there's actual data to return and it's a GET request or when data is necessary
-        if (Object.keys(body).length > 1) {
-            response.data = body; // Include the full body as data if it contains more than just `message`
-            delete response.data.message; // Remove `message` key from data if it exists
-        }
-
-        // Call the original res.json with the custom response structure
-        originalJson.call(this, response);
+        originalJson.call(this, formattedResponse);
     };
 
     next();
 };
-
-module.exports = responseFormatter;
