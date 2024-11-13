@@ -1,37 +1,48 @@
-// server.js
-const express = require('express');
-const dotenv = require('dotenv');
-const connectDB = require('./config/database');
-const authRoutes = require('./routes/auth'); // Import authentication routes
-const menuRoutes = require('./routes/menu');
-const cartRoutes = require('./routes/cart');
-const orderRoutes = require('./routes/orders');
-const responseFormatter = require('./middleware/responseFormatter');
+const express = require("express");
+const dotenv = require("dotenv");
+const connectDB = require("./config/database");
+const authRoutes = require("./routes/auth");
+const menuRoutes = require("./routes/menu");
+const cartRoutes = require("./routes/cart");
+const orderRoutes = require("./routes/orders");
+const responseFormatter = require("./middleware/responseFormatter");
+const errorHandler = require("./middleware/errorHandler");
 
 dotenv.config();
 
+// Validate required environment variables
+if (!process.env.MONGODB_URI || !process.env.JWT_SECRET || !process.env.PORT) {
+  console.error("Missing required environment variables");
+  process.exit(1);
+}
+
 const app = express();
 
-// Middleware
-app.use(express.json()); // Parse incoming JSON data
+// Middleware to parse JSON
+app.use(express.json());
 
-// Connect to MongoDB
+// Connect to the database
 connectDB();
 
-app.use(responseFormatter); // Apply response formatter middleware globally
+// Global response formatter middleware (for API responses)
+app.use(responseFormatter);
 
-// Use authentication routes
-app.use('/api/auth', authRoutes); // Route for authentication-related endpoints
-app.use('/api/menu', menuRoutes);  // Menu routes
-app.use('/api/cart', cartRoutes);  // Cart routes
-app.use('/api/orders', orderRoutes);
+// Route definitions
+app.use("/api/auth", authRoutes);
+app.use("/api/menu", menuRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
 
-// Example route for testing
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
+// Health check route for sanity
+app.get("/", (req, res) => {
+  res.status(200).send("Server is up and running!");
 });
 
+// Error handling middleware
+app.use(errorHandler);
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

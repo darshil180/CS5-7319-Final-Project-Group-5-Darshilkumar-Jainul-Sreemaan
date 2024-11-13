@@ -10,10 +10,7 @@ router.post("/", authMiddleware, async (req, res) => {
   const { orderType } = req.body; // 'Dine-In' or 'Pickup'
 
   try {
-    const cart = await Cart.findOne({ user: req.user }).populate(
-      "items.dish"
-    );
-
+    const cart = await Cart.findOne({ user: req.user }).populate("items.dish");
 
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ msg: "Cart is empty" });
@@ -78,9 +75,7 @@ router.patch("/update-status/:orderId", authMiddleware, async (req, res) => {
 // Get all orders (for admin or user)
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user }).populate(
-      "items.dish"
-    );
+    const orders = await Order.find({ user: req.user }).populate("items.dish");
 
     if (orders.length === 0) {
       return res.status(404).json({ msg: "No orders found" });
