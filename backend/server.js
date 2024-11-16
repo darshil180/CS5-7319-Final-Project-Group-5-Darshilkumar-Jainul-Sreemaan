@@ -7,6 +7,7 @@ const cartRoutes = require("./routes/cart");
 const orderRoutes = require("./routes/orders");
 const responseFormatter = require("./middleware/responseFormatter");
 const errorHandler = require("./middleware/errorHandler");
+const cors = require('cors');
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(cors());
 
 // Connect to the database
 connectDB();
