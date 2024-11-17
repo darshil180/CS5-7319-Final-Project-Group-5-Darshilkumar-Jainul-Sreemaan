@@ -39,14 +39,17 @@ const DishDetailPage = () => {
   const addToCart = () => {
     const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
     const itemIndex = existingCart.findIndex((item) => item.id === dish._id);
+    
 
     if (itemIndex !== -1) {
       // If item already exists in cart, update quantity
       existingCart[itemIndex].quantity += 1;
     } else {
       // If item does not exist, add it
-      existingCart.push({ id: dish._id, name: dish.name, quantity: 1, price: dish.price, imageUrl: dish.imageUrl });
+      existingCart.push({ id: dish._id, name: dish.name, quantity: 1, price: dish.price, imageUrl: dish.imageUrl, description: dish.description, category: dish.category });
     }
+
+    console.log(existingCart);
 
     // Save updated cart back to localStorage
     localStorage.setItem("cart", JSON.stringify(existingCart));

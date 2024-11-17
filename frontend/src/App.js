@@ -1,4 +1,3 @@
-// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
@@ -7,9 +6,12 @@ import Menu from "./pages/Menu";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import CartPage from "./pages/CartPage";  // Import CartPage
+import CartPage from "./pages/CartPage"; // Import CartPage
 import DishDetail from "./pages/DishDetail"; // Import the new DishDetail page
-import ProtectedRoute from "./components/ProtectedRoute";  // Import ProtectedRoute
+import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
+import OrderPage from "./pages/OrderPage"; // Import OrderPage
+import CheckoutPage from "./pages/CheckoutPage"; // Import CheckoutPage
+import OrderConfirmationPage from "./pages/OrderConfirmationPage"; // Import OrderConfirmationPage
 
 const App = () => {
   return (
@@ -32,6 +34,29 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        {/* Order Page Route */}
+        <Route
+          path="/order-summary"
+          element={
+            <ProtectedRoute>
+              <OrderPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Checkout Page Route */}
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Order Confirmation Page Route */}
+        <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
       </Routes>
     </Router>
   );
