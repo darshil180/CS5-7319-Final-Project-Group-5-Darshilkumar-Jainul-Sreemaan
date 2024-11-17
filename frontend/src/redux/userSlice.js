@@ -1,22 +1,24 @@
 // src/redux/userSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  isAuthenticated: localStorage.getItem('token') ? true : false,  // Check if token exists in localStorage
   user: null,
-  token: localStorage.getItem("token") || "",
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     login: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.isAuthenticated = true;
+      state.user = action.payload;
+      localStorage.setItem('token', action.payload.token);  // Save token to localStorage
     },
     logout: (state) => {
+      state.isAuthenticated = false;
       state.user = null;
-      state.token = "";
+      localStorage.removeItem('token');  // Remove token from localStorage
     },
   },
 });
