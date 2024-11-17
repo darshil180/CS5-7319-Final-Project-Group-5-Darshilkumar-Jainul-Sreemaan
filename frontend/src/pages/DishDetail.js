@@ -12,19 +12,18 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
-const DishDetailPage = () => {
-  const { id } = useParams(); // Get the dish id from the URL
+const DishDetail = () => {
+  const { id } = useParams();
   const [dish, setDish] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch dish details using the id from the URL
     const fetchDishDetails = async () => {
       try {
         const response = await axios.get(
           `http://localhost:5000/api/menu/dishes/${id}`
         );
-        setDish(response.data.data.data); // Assuming the dish data is in the 'data' field
+        setDish(response.data.data.data);
       } catch (error) {
         console.error("Failed to fetch dish details:", error);
       } finally {
@@ -33,26 +32,25 @@ const DishDetailPage = () => {
     };
 
     fetchDishDetails();
-  }, [id]); // Fetch data when the id changes
+  }, [id]);
 
-  // Function to add item to cart in localStorage
-  const addToCart = () => {
-    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const itemIndex = existingCart.findIndex((item) => item.id === dish._id);
-    
-
-    if (itemIndex !== -1) {
-      // If item already exists in cart, update quantity
-      existingCart[itemIndex].quantity += 1;
-    } else {
-      // If item does not exist, add it
-      existingCart.push({ id: dish._id, name: dish.name, quantity: 1, price: dish.price, imageUrl: dish.imageUrl, description: dish.description, category: dish.category });
+  const addToCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:5000/api/cart/add",
+        { dishId: dish._id, quantity: 1 },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      alert("Dish added to cart!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("Failed to add to cart.");
     }
-
-    console.log(existingCart);
-
-    // Save updated cart back to localStorage
-    localStorage.setItem("cart", JSON.stringify(existingCart));
   };
 
   if (loading) {
@@ -74,13 +72,10 @@ const DishDetailPage = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Card sx={{ display: "flex", flexDirection: "row", boxShadow: 3 }}>
-        {/* Image Section */}
         <Box
           sx={{
             flex: 1,
-            position: "relative",
-            overflow: "hidden",
-            maxWidth: "50%", // Make the image take up half the width
+            maxWidth: "50%",
           }}
         >
           <CardMedia
@@ -89,25 +84,12 @@ const DishDetailPage = () => {
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              transition: "filter 0.3s ease-in-out",
-              filter: "blur(5px)", // Apply blur effect
             }}
             image={dish.imageUrl || "https://via.placeholder.com/400"}
             alt={dish.name}
           />
         </Box>
-
-        {/* Content Section */}
-        <CardContent
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            paddingLeft: "30px",
-            maxWidth: "50%",
-          }}
-        >
+        <CardContent sx={{ flex: 1, maxWidth: "50%" }}>
           <Typography variant="h3" sx={{ fontWeight: "bold" }}>
             {dish.name}
           </Typography>
@@ -137,4 +119,4 @@ const DishDetailPage = () => {
   );
 };
 
-export default DishDetailPage;
+export default DishDetail;

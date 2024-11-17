@@ -1,23 +1,23 @@
+// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
-import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import CartPage from "./pages/CartPage"; // Import CartPage
-import DishDetail from "./pages/DishDetail"; // Import the new DishDetail page
-import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
-import OrderPage from "./pages/OrderPage"; // Import OrderPage
-import CheckoutPage from "./pages/CheckoutPage"; // Import CheckoutPage
-import OrderConfirmationPage from "./pages/OrderConfirmationPage"; // Import OrderConfirmationPage
+import CartPage from "./pages/CartPage";
+import DishDetail from "./pages/DishDetail";
+import ProtectedRoute from "./components/ProtectedRoute";
+import OrderPage from "./pages/OrderPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import ProfilePage from "./pages/ProfilePage";  // Import the ProfilePage
 
 const App = () => {
   return (
     <Router>
       <Header />
-      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
@@ -25,7 +25,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/dish/:id" element={<DishDetail />} />
 
-        {/* Protected Cart Route */}
+        {/* Protected Routes */}
         <Route
           path="/cart"
           element={
@@ -34,8 +34,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
-        {/* Order Page Route */}
         <Route
           path="/order-summary"
           element={
@@ -44,8 +42,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
-        {/* Checkout Page Route */}
         <Route
           path="/checkout"
           element={
@@ -54,9 +50,24 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/order-confirmation"
+          element={
+            <ProtectedRoute>
+              <OrderConfirmationPage />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Order Confirmation Page Route */}
-        <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+        {/* Profile Page Route */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

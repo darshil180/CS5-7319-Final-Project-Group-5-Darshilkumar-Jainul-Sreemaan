@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const authMiddleware = require("../middleware/auth");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -60,6 +61,29 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error(error.msg);
     res.status(500).json({ msg: "Server error" });
+  }
+});
+
+router.get("/profile", authMiddleware, async (req, res) => {
+  try {
+    // Assuming the userId is stored in the JWT token (you can adjust if needed)
+    const userId = req.user; 
+
+    // Fetch user details from the database
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Return user details (excluding sensitive data like password)
+    res.json({
+      name: user.name,
+      email: user.email,
+      phone: user.phone, // Add any other fields you want
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 

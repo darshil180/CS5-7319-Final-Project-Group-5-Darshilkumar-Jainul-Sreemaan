@@ -79,15 +79,18 @@ router.patch("/update", authMiddleware, async (req, res) => {
 });
 
 // Remove item from cart
-router.delete("/remove", authMiddleware, async (req, res) => {
+router.post("/remove", authMiddleware, async (req, res) => {
   const { dishId } = req.body;
   const userId = req.user;
 
   try {
     const cart = await getCart(userId);
+    console.log(cart.items);
     const itemIndex = cart.items.findIndex(
       (item) => item.dish.toString() === dishId
     );
+    console.log(dishId)
+    console.log(itemIndex)
 
     if (itemIndex > -1) {
       cart.items.splice(itemIndex, 1);
@@ -103,7 +106,7 @@ router.delete("/remove", authMiddleware, async (req, res) => {
 });
 
 // Clear entire cart
-router.delete("/clear", authMiddleware, async (req, res) => {
+router.post("/clear", authMiddleware, async (req, res) => {
   const userId = req.user;
 
   try {

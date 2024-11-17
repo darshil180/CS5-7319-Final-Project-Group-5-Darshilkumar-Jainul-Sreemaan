@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Container, Box, TextField, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom"; // Changed to useNavigate
+import { Container, Box, TextField, Button, Typography, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CheckoutPage = () => {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
   const [shippingInfo, setShippingInfo] = useState({
     name: "",
     address: "",
     phone: "",
   });
+  const [orderType, setOrderType] = useState("Dine-In"); // Default order type
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setShippingInfo({
@@ -17,18 +20,45 @@ const CheckoutPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleOrderTypeChange = (e) => {
+    setOrderType(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here, you can send the order data to a backend (for example using axios)
-    // For now, we will just log the order and redirect to order confirmation.
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
 
-    console.log("Order Placed:", shippingInfo);
+    if (!token) {
+      setError("Unauthorized: No token found. Please log in.");
+      return;
+    }
 
-    // Clear cart after placing order
-    localStorage.removeItem("cart");
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/orders",
+        {
+          ...shippingInfo,
+          orderType,
+        },
+        {
+          headers: {
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    // Redirect to order confirmation page
-    navigate("/order-confirmation"); // Use navigate instead of history.push
+      console.log("Order Placed:", response.data);
+
+      // Clear cart after placing order
+      localStorage.removeItem("cart");
+
+      // Redirect to order confirmation page
+      navigate("/order-confirmation");
+    } catch (err) {
+      console.error(err);
+      setError("Failed to place order. Please try again.");
+    }
   };
 
   return (
@@ -36,6 +66,7 @@ const CheckoutPage = () => {
       <Typography variant="h5">Checkout</Typography>
 
       <form onSubmit={handleSubmit}>
+        {/* User Info */}
         <Box sx={{ mt: 2 }}>
           <TextField
             fullWidth
@@ -66,6 +97,28 @@ const CheckoutPage = () => {
           />
         </Box>
 
+        {/* Order Type */}
+        <FormControl component="fieldset" sx={{ mt: 2 }}>
+          <FormLabel component="legend">Order Type</FormLabel>
+          <RadioGroup
+            row
+            name="orderType"
+            value={orderType}
+            onChange={handleOrderTypeChange}
+          >
+            <FormControlLabel value="Dine-In" control={<Radio />} label="Dine-In" />
+            <FormControlLabel value="Pickup" control={<Radio />} label="Pickup" />
+          </RadioGroup>
+        </FormControl>
+
+        {/* Error Message */}
+        {error && (
+          <Typography variant="body1" color="error" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
+        )}
+
+        {/* Submit Button */}
         <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
           Place Order
         </Button>
