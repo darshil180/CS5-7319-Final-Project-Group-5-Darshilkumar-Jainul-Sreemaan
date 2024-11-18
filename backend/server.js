@@ -5,6 +5,7 @@ const authRoutes = require("./routes/auth");
 const menuRoutes = require("./routes/menu");
 const cartRoutes = require("./routes/cart");
 const orderRoutes = require("./routes/orders");
+const reservationRoutes = require("./routes/reservation");
 const responseFormatter = require("./middleware/responseFormatter");
 const errorHandler = require("./middleware/errorHandler");
 const cors = require('cors');
@@ -34,6 +35,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/menu", menuRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/reservations", reservationRoutes);
 
 // Health check route for sanity
 app.get("/", (req, res) => {
