@@ -11,8 +11,12 @@ import DishDetail from "./pages/DishDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
 import OrderPage from "./pages/OrderPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import ProfilePage from "./pages/ProfilePage";  // Import the ProfilePage
+import ReservationFormPage from "./pages/ReservationFormPage"; // Ensure correct import
+import ReservationListPage from "./pages/ReservationListPage";
 
 const App = () => {
   return (
@@ -24,6 +28,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dish/:id" element={<DishDetail />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* Protected Routes */}
         <Route
@@ -65,6 +71,22 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reservations"
+          element={
+            <ProtectedRoute>
+              <ReservationListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reservation/new"
+          element={
+            <ProtectedRoute>
+              <ReservationFormPage />
             </ProtectedRoute>
           }
         />

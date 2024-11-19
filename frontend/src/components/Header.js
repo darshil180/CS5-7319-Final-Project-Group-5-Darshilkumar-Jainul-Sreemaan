@@ -34,7 +34,8 @@ const Header = () => {
   return (
     <AppBar position="sticky" sx={{ backgroundColor: theme.palette.primary.main }}>
       <Toolbar sx={{ justifyContent: "space-between", padding: "0 20px" }}>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+        {/* Logo / App Name */}
+        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
           Restaurant App
         </Typography>
 
@@ -58,6 +59,7 @@ const Header = () => {
             to="/menu" 
             sx={{
               color: "white", 
+              marginRight: 2, 
               textTransform: "none", 
               "&:hover": {
                 backgroundColor: theme.palette.primary.dark,
@@ -66,24 +68,76 @@ const Header = () => {
             Menu
           </Button>
 
-          {/* Only show Cart button if user is authenticated */}
+          {/* Static Pages (New Links) */}
+          <Button 
+            component={Link} 
+            to="/about" 
+            sx={{
+              color: "white", 
+              marginRight: 2, 
+              textTransform: "none", 
+              "&:hover": {
+                backgroundColor: theme.palette.primary.dark,
+              }
+            }}>
+            About
+          </Button>
+          <Button 
+            component={Link} 
+            to="/contact" 
+            sx={{
+              color: "white", 
+              marginRight: 2, 
+              textTransform: "none", 
+              "&:hover": {
+                backgroundColor: theme.palette.primary.dark,
+              }
+            }}>
+            Contact
+          </Button>
+
+          {/* "Create Reservation" Button */}
           {isAuthenticated && (
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Button 
+              component={Link} 
+              to="/reservation/new" 
+              sx={{
+                color: "white", 
+                marginRight: 2, 
+                textTransform: "none", 
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.dark,
+                }
+              }}>
+              Reservation
+            </Button>
+          )}
+
+          {/* Cart Button */}
+          {isAuthenticated && (
+            <Box sx={{ display: "flex", alignItems: "center", marginRight: 2 }}>
               <IconButton 
                 component={Link} 
                 to="/cart" 
                 sx={{
                   color: "white", 
+                  padding: "8px",
                   "&:hover": {
-                    backgroundColor: theme.palette.secondary.light,
+                    backgroundColor: theme.palette.secondary.main,
+                    borderRadius: "50%",
                   }
                 }}>
                 <Badge 
                   badgeContent={cartItemCount} 
                   color="error" 
-                  sx={{ "& .MuiBadge-dot": { backgroundColor: theme.palette.secondary.main } }}
+                  sx={{
+                    "& .MuiBadge-dot": { backgroundColor: theme.palette.secondary.main },
+                    fontSize: '14px', // Adjust font size of badge
+                    top: 4, // Adjust badge position
+                    right: -5, // Move badge closer to cart icon
+                  }}
                 >
-                  <ShoppingCartIcon sx={{ fontSize: 28 }} />
+                  <ShoppingCartIcon sx={{ fontSize: 30 }} />
                 </Badge>
               </IconButton>
             </Box>
@@ -93,17 +147,31 @@ const Header = () => {
           {token ? (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <IconButton onClick={handleProfileClick} sx={{ color: "white" }}>
-                <Avatar>{localStorage.getItem("userName")?.[0]}</Avatar>
+                <Avatar 
+                  sx={{
+                    backgroundColor: theme.palette.primary.dark,
+                    fontSize: "18px", 
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {localStorage.getItem("userName")?.[0]}
+                </Avatar>
               </IconButton>
 
               <Menu
                 anchorEl={anchorEl}
                 open={openMenu}
                 onClose={handleMenuClose}
-                sx={{ mt: 2 }}
+                sx={{
+                  mt: 2,
+                  "& .MuiPaper-root": {
+                    borderRadius: "10px", // Rounded menu
+                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)", // Soft shadow
+                  },
+                }}
               >
                 <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
-                <MenuItem onClick={() => navigate("/orders")}>Order History</MenuItem>
+                <MenuItem onClick={() => navigate("/reservations")}>Reservations</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </Box>

@@ -13,8 +13,13 @@ import axios from "axios";
 import Slider from "react-slick";
 import DishCard from "../components/DishCard";
 
-// Sample categories for slider
-const categories = ["South Indian", "Chinese", "Mexican", "Italian"];
+// Sample categories with icons
+const categories = [
+  { name: "South Indian", icon: "🥘" },
+  { name: "Chinese", icon: "🥡" },
+  { name: "Mexican", icon: "🌮" },
+  { name: "Italian", icon: "🍝" },
+];
 
 // Slider settings
 const sliderSettings = {
@@ -23,6 +28,26 @@ const sliderSettings = {
   speed: 500,
   slidesToShow: 4,
   slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+      },
+    },
+  ],
 };
 
 const Menu = () => {
@@ -31,8 +56,8 @@ const Menu = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [activeCategory, setActiveCategory] = useState(null); // Track active category
-  const [searchTerm, setSearchTerm] = useState(""); // Track search term
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch dishes from API
   useEffect(() => {
@@ -42,8 +67,7 @@ const Menu = () => {
         const response = await axios.get("http://localhost:5000/api/menu/dishes", {
           params: { page: currentPage },
         });
-        console.log("API Response:", response.data);
-        const dishesData = response.data.data.data; // Extract dishes array
+        const dishesData = response.data.data.data;
         setDishes(dishesData);
         setFilteredDishes(dishesData);
         setTotalPages(response.data.data.totalPages);
@@ -59,12 +83,12 @@ const Menu = () => {
 
   // Filter dishes by category
   const handleCategoryClick = (category) => {
-    setActiveCategory(category); // Set active category
-    if (category === "All") {
+    setActiveCategory(category.name);
+    if (category.name === "All") {
       setFilteredDishes(dishes);
     } else {
       const filtered = dishes.filter((dish) =>
-        dish.category.toLowerCase().includes(category.toLowerCase())
+        dish.category.toLowerCase().includes(category.name.toLowerCase())
       );
       setFilteredDishes(filtered);
     }
@@ -85,9 +109,9 @@ const Menu = () => {
 
   // Reset filter and search
   const handleResetFilter = () => {
-    setFilteredDishes(dishes); // Reset to all dishes
-    setActiveCategory(null); // Clear active category
-    setSearchTerm(""); // Clear search term
+    setFilteredDishes(dishes);
+    setActiveCategory(null);
+    setSearchTerm("");
   };
 
   // Handle page change
@@ -105,26 +129,55 @@ const Menu = () => {
         <Slider {...sliderSettings}>
           {categories.map((category) => (
             <Box
-              key={category}
+              key={category.name}
               onClick={() => handleCategoryClick(category)}
               sx={{
                 cursor: "pointer",
                 textAlign: "center",
-                padding: "10px",
-                backgroundColor: activeCategory === category ? "#ddd" : "#eee",
+                padding: "20px",
+                backgroundColor:
+                  activeCategory === category.name ? "#ffe0b2" : "#f5f5f5",
                 borderRadius: "10px",
                 fontWeight: "bold",
                 transition: "background-color 0.3s",
+                "&:hover": {
+                  backgroundColor: "#ffe0b2",
+                },
               }}
             >
-              <Typography>{category}</Typography>
+              <Typography
+                variant="h4"
+                sx={{
+                  display: "block",
+                  fontSize: "3rem",
+                  mb: 1,
+                }}
+              >
+                {category.icon}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  fontSize: "1rem",
+                  textTransform: "capitalize",
+                }}
+              >
+                {category.name}
+              </Typography>
             </Box>
           ))}
         </Slider>
       </Box>
 
       {/* Search Bar */}
-      <Box sx={{ mb: 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <Box
+        sx={{
+          mb: 4,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <TextField
           label="Search Dishes"
           variant="outlined"
@@ -169,9 +222,9 @@ const Menu = () => {
           {/* Pagination */}
           <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
             <Pagination
-              count={totalPages} // Total number of pages
-              page={currentPage} // Current page
-              onChange={handlePageChange} // Handle page change
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
               color="primary"
             />
           </Box>

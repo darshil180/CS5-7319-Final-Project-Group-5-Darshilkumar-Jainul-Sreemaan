@@ -77,10 +77,6 @@ router.get("/", authMiddleware, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user }).populate("items.dish");
 
-    if (orders.length === 0) {
-      return res.status(404).json({ msg: "No orders found" });
-    }
-
     res.status(200).json({ msg: "Orders retrieved", data: orders });
   } catch (error) {
     console.error("Error retrieving orders:", error);

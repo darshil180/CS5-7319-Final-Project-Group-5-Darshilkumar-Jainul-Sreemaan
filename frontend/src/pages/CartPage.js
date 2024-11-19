@@ -29,10 +29,7 @@ const CartPage = () => {
         },
       });
 
-      console.log("Cart API response:", response.data);
-
-      const items = response.data.data.data.items || []; // Ensure it's an array
-      console.log(items);
+      const items = response.data.data.data.items || [];
       setCartItems(Array.isArray(items) ? items : []);
       calculateTotal(items);
     } catch (error) {
@@ -51,11 +48,9 @@ const CartPage = () => {
 
   // Update cart item quantity
   const updateCartItem = async (id, quantity) => {
-    try {
-      if (quantity < 1) {
-        return; // Prevent setting quantity below 1
-      }
+    if (quantity < 1) return;
 
+    try {
       const token = localStorage.getItem("token");
       await axios.patch(
         "http://localhost:5000/api/cart/update",
@@ -66,7 +61,7 @@ const CartPage = () => {
           },
         }
       );
-      fetchCart(); // Refresh cart after update
+      fetchCart();
     } catch (error) {
       console.error("Error updating cart:", error);
     }
@@ -74,10 +69,8 @@ const CartPage = () => {
 
   // Remove a cart item
   const removeCartItem = async (id) => {
-    console.log(id);
     try {
       const token = localStorage.getItem("token");
-      console.log(token);
       await axios.post(
         "http://localhost:5000/api/cart/remove",
         { dishId: id },
@@ -87,7 +80,7 @@ const CartPage = () => {
           },
         }
       );
-      fetchCart(); // Refresh cart after removal
+      fetchCart();
     } catch (error) {
       console.error("Error removing cart item:", error);
     }
@@ -119,8 +112,8 @@ const CartPage = () => {
 
   if (cartItems.length === 0) {
     return (
-      <Container sx={{ mt: 4, textAlign: "center" }}>
-        <Typography variant="h4" sx={{ mb: 2 }}>
+      <Container sx={{ mt: 6, textAlign: "center" }}>
+        <Typography variant="h4" sx={{ mb: 2, fontWeight: "bold", color: "text.primary" }}>
           Your cart is empty
         </Typography>
         <Button
@@ -128,7 +121,11 @@ const CartPage = () => {
           color="primary"
           component={Link}
           to="/menu"
-          sx={{ padding: "10px 20px", fontSize: "1rem" }}
+          sx={{
+            padding: "12px 24px",
+            fontSize: "1rem",
+            borderRadius: "25px",
+          }}
         >
           Browse Menu
         </Button>
@@ -138,8 +135,9 @@ const CartPage = () => {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+      {/* Header */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 4 }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold", color: "text.primary" }}>
           Your Cart
         </Typography>
         <Button
@@ -147,21 +145,35 @@ const CartPage = () => {
           color="error"
           onClick={clearCart}
           sx={{
-            borderRadius: "20px",
-            fontSize: "1rem",
-            padding: "8px 16px",
-            fontWeight: "600",
+            borderRadius: "25px",
+            fontSize: "0.9rem",
+            fontWeight: "bold",
+            padding: "8px 20px",
           }}
         >
           Clear Cart
         </Button>
       </Box>
+
+      {/* Cart Items */}
       <List>
         {cartItems.map((item) => (
           <React.Fragment key={item.dish._id}>
-            <ListItem sx={{ mb: 2 }}>
-              <Paper sx={{ padding: "16px", width: "100%", borderRadius: "12px" }}>
+            <ListItem sx={{ mb: 3 }}>
+              <Paper
+                elevation={3}
+                sx={{
+                  padding: "16px",
+                  width: "100%",
+                  borderRadius: "15px",
+                  transition: "transform 0.3s",
+                  "&:hover": {
+                    transform: "scale(1.02)",
+                  },
+                }}
+              >
                 <Grid container alignItems="center">
+                  {/* Dish Image */}
                   <Grid item xs={3}>
                     <Box
                       component="img"
@@ -171,12 +183,23 @@ const CartPage = () => {
                         width: "100%",
                         height: "100px",
                         objectFit: "cover",
-                        borderRadius: "8px",
+                        borderRadius: "10px",
                       }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h6">{item.dish.name}</Typography>
+
+                  {/* Dish Details */}
+                  <Grid item xs={6} sx={{ paddingLeft: "16px" }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: "bold",
+                        color: "text.primary",
+                        mb: 1,
+                      }}
+                    >
+                      {item.dish.name}
+                    </Typography>
                     <Typography variant="body2" sx={{ color: "text.secondary" }}>
                       Quantity: {item.quantity}
                     </Typography>
@@ -184,24 +207,26 @@ const CartPage = () => {
                       ${item.dish.price} each
                     </Typography>
                   </Grid>
+
+                  {/* Actions */}
                   <Grid item xs={3} textAlign="right">
                     <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
                       <IconButton
                         onClick={() => updateCartItem(item.dish._id, item.quantity + 1)}
-                        size="small"
+                        color="primary"
                       >
                         <Add />
                       </IconButton>
                       <IconButton
                         onClick={() => updateCartItem(item.dish._id, item.quantity - 1)}
-                        size="small"
+                        color="secondary"
                         disabled={item.quantity === 1}
                       >
                         <Remove />
                       </IconButton>
                       <IconButton
                         onClick={() => removeCartItem(item.dish._id)}
-                        size="small"
+                        color="error"
                       >
                         <Delete />
                       </IconButton>
@@ -215,8 +240,9 @@ const CartPage = () => {
         ))}
       </List>
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
-        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+      {/* Total and Checkout */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4, alignItems: "center" }}>
+        <Typography variant="h5" sx={{ fontWeight: "bold", color: "text.primary" }}>
           Total: ${total.toFixed(2)}
         </Typography>
         <Button
@@ -224,7 +250,11 @@ const CartPage = () => {
           color="primary"
           component={Link}
           to="/checkout"
-          sx={{ padding: "10px 20px", fontSize: "1rem" }}
+          sx={{
+            padding: "12px 24px",
+            fontSize: "1rem",
+            borderRadius: "25px",
+          }}
         >
           Proceed to Checkout
         </Button>
