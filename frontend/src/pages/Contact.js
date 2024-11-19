@@ -5,17 +5,19 @@ import { styled } from "@mui/system";
 
 // Styled components using Material UI's sx prop and styled() function
 const StyledContainer = styled(Container)(({ theme }) => ({
-  padding: theme.spacing(4),
+  padding: theme.spacing(6),
   backgroundColor: theme.palette.background.default,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[3],
-  marginTop: theme.spacing(4),
+  marginTop: theme.spacing(8),
 }));
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(4),
   fontWeight: "bold",
   color: theme.palette.primary.main,
+  fontSize: "2rem",
+  textTransform: "uppercase",
 }));
 
 const ContactUs = () => {
@@ -47,15 +49,15 @@ const ContactUs = () => {
 
   return (
     <StyledContainer>
-      <Typography variant="h4" color="primary" align="center" gutterBottom>
+      <Typography variant="h4" color="primary" align="center" gutterBottom sx={{ fontWeight: 700 }}>
         Contact Us
       </Typography>
 
       {/* Contact Form Section */}
       <SectionTitle variant="h5" align="center">
-        We’d Love to Hear From You
+        We'd Love to Hear From You
       </SectionTitle>
-      <Typography variant="body1" paragraph align="center" color="textSecondary">
+      <Typography variant="body1" paragraph align="center" color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: 1.7 }}>
         Have any questions, feedback, or need assistance? Feel free to reach out, and we will get back to you as soon as possible!
       </Typography>
 
@@ -119,20 +121,20 @@ const ContactUs = () => {
       <SectionTitle variant="h5" align="center">
         Our Location
       </SectionTitle>
-      <Typography variant="body1" paragraph align="center" color="textSecondary">
-        Visit us at our restaurant for an unforgettable dining experience. We are located at the following address:
+      <Typography variant="body1" paragraph align="center" color="textSecondary" sx={{ fontSize: "1.1rem", lineHeight: 1.7 }}>
+        Visit us at our luxurious Taj restaurant for an unforgettable dining experience. We are located at the following address:
       </Typography>
 
       {/* Address */}
       <Paper sx={{ padding: theme.spacing(3), textAlign: "center", marginBottom: theme.spacing(4) }}>
         <Typography variant="h6" gutterBottom>
-          Our Restaurant
+          Taj Restaurant
         </Typography>
         <Typography variant="body1" color="textSecondary">
-          123 Restaurant Street, Food City, 12345
+          Taj Palace, 1 Mansingh Road, New Delhi, 110011, India
         </Typography>
         <Typography variant="body1" color="textSecondary">
-          Phone: (123) 456-7890 | Email: contact@restaurant.com
+          Phone: +91 11 6611 4444 | Email: contact@tajrestaurant.com
         </Typography>
       </Paper>
 
@@ -143,15 +145,15 @@ const ContactUs = () => {
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: theme.spacing(4) }}>
         <Map sx={{ fontSize: 40, marginRight: 2, color: theme.palette.primary.main }} />
         <Typography variant="body1" color="textSecondary">
-          We are located at the heart of Food City. Look for us on the map below:
+          We are located at the heart of New Delhi. Look for us on the map below:
         </Typography>
       </Box>
 
       {/* Map Embed */}
       <Box sx={{ textAlign: "center" }}>
-        {/* You can embed Google Maps or use any other map service here */}
+        {/* Embed Taj Palace location */}
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11635.576331347109!2d-73.935242!3d40.730610!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a30c87b3fa1%3A0x7fcb4468c0d12e10!2sRestaurant+Street%2C+Food+City%2C+NY!5e0!3m2!1sen!2sus!4v1636720123125!5m2!1sen!2sus"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14079.83642417525!2d77.22111321631476!3d28.61601919725027!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1d7c7bbd3b35%3A0xfef246ee88b897af!2sTaj+Palace%2C+New+Delhi!5e0!3m2!1sen!2sin!4v1637423205603!5m2!1sen!2sin"
           width="100%"
           height="400"
           style={{ border: "0" }}

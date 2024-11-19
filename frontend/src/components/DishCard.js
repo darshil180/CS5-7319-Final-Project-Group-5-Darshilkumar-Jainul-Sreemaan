@@ -4,13 +4,14 @@ import { Card, CardContent, Typography, CardMedia } from "@mui/material";
 import { Link } from "react-router-dom";  // Import Link to route to the dish detail page
 
 const DishCard = ({ dish }) => {
+  console.log(dish)
   return (
     <Card sx={{ maxWidth: 345, height: 380, display: 'flex', flexDirection: 'column', position: 'relative' }}>
       <Link to={`/dish/${dish._id}`} style={{ textDecoration: 'none' }}> {/* Route to DishDetail page */}
         <CardMedia
           component="img"
           height="200"
-          image="https://via.placeholder.com/300"
+          image={dish.imageUrl}
           alt={dish.name}
           sx={{ objectFit: 'cover' }}
         />

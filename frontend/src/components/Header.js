@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem, Avatar, Box, Badge } from "@mui/material";
+import { AppBar, Toolbar, Button, IconButton, Menu, MenuItem, Avatar, Box, Badge, Typography } from "@mui/material";
 import { Link, useNavigate, useLocation } from "react-router-dom"; 
 import { useDispatch, useSelector } from "react-redux"; 
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"; // ShoppingCart Icon
 import { logout } from "../redux/userSlice"; // Redux logout action
 import { useTheme } from "@mui/material/styles"; // For custom theme
+
+import logo from "../assets/images/Tajlogo.png"; // Import logo from assets
 
 const Header = () => {
   const theme = useTheme(); // Access the custom theme
@@ -35,9 +37,32 @@ const Header = () => {
     <AppBar position="sticky" sx={{ backgroundColor: theme.palette.primary.main }}>
       <Toolbar sx={{ justifyContent: "space-between", padding: "0 20px" }}>
         {/* Logo / App Name */}
-        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-          Restaurant App
-        </Typography>
+        <Link to="/" style={{ display: "flex", alignItems: "center" }}>
+          <img 
+            src={logo} 
+            alt="Taj Restaurant Logo" 
+            style={{
+              height: 50, 
+              cursor: 'pointer', 
+              marginRight: 10, 
+              background: 'none', // Remove any background
+              borderRadius: '0', // Remove border radius if there is any
+            }} 
+          />
+          {/* Add Restaurant Name */}
+          {/* <Typography 
+            variant="h6" 
+            sx={{ 
+              color: 'white', 
+              fontWeight: 'bold', 
+              textTransform: 'uppercase', 
+              letterSpacing: 1, 
+              fontFamily: "'Playfair Display', serif" // Add a stylish font for restaurant name
+            }}
+          >
+            Taj Restaurant
+          </Typography> */}
+        </Link>
 
         {/* Navigation Buttons */}
         <Box sx={{ display: "flex", alignItems: "center" }}>

@@ -39,7 +39,7 @@ const Home = () => {
           letterSpacing: "1px",
         }}
       >
-        Welcome to the Restaurant App!
+        Welcome to Taj Restaurant!
       </Typography>
 
       <Typography
@@ -50,7 +50,7 @@ const Home = () => {
           fontStyle: "italic",
         }}
       >
-        Discover delicious dishes, order online, and enjoy your meal!
+        A fine dining experience that tantalizes your taste buds with authentic flavors.
       </Typography>
 
       {/* Image Slider */}
@@ -117,7 +117,7 @@ const Home = () => {
             color: "primary.main",
           }}
         >
-          Explore Our Menu!
+          Explore Our Exquisite Menu!
         </Typography>
         <Typography
           variant="body1"
@@ -127,7 +127,7 @@ const Home = () => {
             fontSize: "18px",
           }}
         >
-          Browse through a variety of our best dishes, and order what you crave!
+          From traditional delicacies to modern culinary masterpieces, our menu has something for every palate.
         </Typography>
 
         {/* Buttons Section */}
@@ -146,7 +146,7 @@ const Home = () => {
               },
             }}
           >
-            See Our Menu
+            View Our Menu
           </Button>
 
           <Button
@@ -185,10 +185,10 @@ const Home = () => {
               }}
             />
             <Typography sx={{ mt: 2, fontWeight: "bold" }}>
-              Tasty Dish 1
+              Signature Dish 1
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
-              A brief description of this dish. A must-try!
+              A must-try dish that brings the flavors of India right to your table.
             </Typography>
           </Paper>
         </Grid>
@@ -207,10 +207,10 @@ const Home = () => {
               }}
             />
             <Typography sx={{ mt: 2, fontWeight: "bold" }}>
-              Tasty Dish 2
+              Signature Dish 2
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
-              A brief description of this dish. A must-try!
+              A flavorful blend of spices and fresh ingredients, perfect for your taste buds.
             </Typography>
           </Paper>
         </Grid>
@@ -229,10 +229,10 @@ const Home = () => {
               }}
             />
             <Typography sx={{ mt: 2, fontWeight: "bold" }}>
-              Tasty Dish 3
+              Signature Dish 3
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
-              A brief description of this dish. A must-try!
+              A delicious and aromatic dish that brings the heart of Indian cuisine to your table.
             </Typography>
           </Paper>
         </Grid>

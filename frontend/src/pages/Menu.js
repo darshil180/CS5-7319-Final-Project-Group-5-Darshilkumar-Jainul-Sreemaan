@@ -15,6 +15,7 @@ import DishCard from "../components/DishCard";
 
 // Sample categories with icons
 const categories = [
+  { name: "All", icon: "🍽️" },
   { name: "South Indian", icon: "🥘" },
   { name: "Chinese", icon: "🥡" },
   { name: "Mexican", icon: "🌮" },
@@ -56,7 +57,7 @@ const Menu = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch dishes from API
@@ -110,7 +111,7 @@ const Menu = () => {
   // Reset filter and search
   const handleResetFilter = () => {
     setFilteredDishes(dishes);
-    setActiveCategory(null);
+    setActiveCategory("All");
     setSearchTerm("");
   };
 
@@ -186,7 +187,7 @@ const Menu = () => {
           onChange={handleSearchChange}
           sx={{ mr: 2 }}
         />
-        {activeCategory || searchTerm ? (
+        {activeCategory !== "All" || searchTerm ? (
           <Button
             variant="outlined"
             color="secondary"
@@ -202,6 +203,7 @@ const Menu = () => {
       {loading ? (
         <Box sx={{ textAlign: "center", mt: 4 }}>
           <CircularProgress />
+          <Typography sx={{ mt: 2 }}>Loading dishes...</Typography>
         </Box>
       ) : (
         <>
@@ -214,7 +216,7 @@ const Menu = () => {
               ))
             ) : (
               <Typography variant="h6" sx={{ mt: 4 }}>
-                No dishes found
+                No dishes found matching your criteria.
               </Typography>
             )}
           </Grid>

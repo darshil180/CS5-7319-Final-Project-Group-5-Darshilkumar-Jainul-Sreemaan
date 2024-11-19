@@ -1,29 +1,23 @@
 import React from "react";
-import { Typography, Box, Container, Grid, Paper, Card, CardContent, CardMedia, Button } from "@mui/material";
+import { Typography, Box, Container, Grid, Paper, CardMedia, Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { styled } from "@mui/system";
 
 // Styled components using Material UI's sx prop and styled() function
 const StyledContainer = styled(Container)(({ theme }) => ({
-  padding: theme.spacing(4),
+  padding: theme.spacing(6),
   backgroundColor: theme.palette.background.default,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[3],
-  marginTop: theme.spacing(4),
+  marginTop: theme.spacing(8),
 }));
 
 const SectionTitle = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(4),
   fontWeight: "bold",
   color: theme.palette.primary.main,
-}));
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  maxWidth: 600,
-  margin: "auto",
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: theme.shadows[5],
-  marginTop: theme.spacing(3),
+  fontSize: "2rem",
+  textTransform: "uppercase",
 }));
 
 const About = () => {
@@ -31,29 +25,29 @@ const About = () => {
 
   return (
     <StyledContainer>
-      <Typography variant="h4" color="primary" align="center" gutterBottom>
-        About Us
+      <Typography variant="h4" color="primary" align="center" gutterBottom sx={{ fontWeight: 700 }}>
+        Welcome to Taj Restaurant
       </Typography>
 
       {/* Introduction Section */}
-      <Box sx={{ marginBottom: 4 }}>
-        <Typography variant="h6" paragraph align="center" color="textSecondary">
-          Welcome to Our Restaurant! A place where passion meets food.
+      <Box sx={{ marginBottom: 6 }}>
+        <Typography variant="h6" paragraph align="center" color="textSecondary" sx={{ fontSize: "1.2rem", lineHeight: 1.7 }}>
+          Experience the Richness of Indian Cuisine at Taj Restaurant.
         </Typography>
-        <Typography variant="body1" paragraph align="center" color="textSecondary">
-          We are more than just a restaurant – we are a destination for delicious food, great experiences, and unforgettable moments.
-          Whether you're here for a casual meal with friends, a business lunch, or a special celebration, we aim to make each visit a delightful experience.
+        <Typography variant="body1" paragraph align="center" color="textSecondary" sx={{ fontSize: "1rem", lineHeight: 1.7 }}>
+          Located in the heart of the city, Taj Restaurant offers an unparalleled dining experience. With our focus on authentic flavors, innovative recipes, and exceptional service, every meal here is designed to transport you to the heart of India.
+          From exquisite regional dishes to an inviting atmosphere, we strive to make your visit memorable.
         </Typography>
       </Box>
 
       {/* Our Philosophy Section */}
-      <Box sx={{ marginBottom: 4 }}>
+      <Box sx={{ marginBottom: 6 }}>
         <SectionTitle variant="h5" align="center">
           Our Philosophy
         </SectionTitle>
-        <Typography variant="body1" paragraph align="center" color="textSecondary">
-          At our restaurant, we believe that food should not just be a meal; it should be an experience. We focus on fresh ingredients, innovative recipes, and creating an atmosphere that feels like home.
-          Our chefs work tirelessly to craft dishes that excite the senses, and our staff is here to ensure every guest feels welcome and cared for.
+        <Typography variant="body1" paragraph align="center" color="textSecondary" sx={{ fontSize: "1.1rem", lineHeight: 1.8 }}>
+          At Taj, we believe that dining should be an experience of luxury and indulgence. We focus on using only the finest ingredients, prepared with care and passion by our skilled chefs. 
+          Our goal is to create an atmosphere that blends traditional Indian elegance with modern comfort. Whether you're here for a special occasion or a casual dinner, we aim to exceed your expectations.
         </Typography>
       </Box>
 
@@ -66,8 +60,9 @@ const About = () => {
           <Paper sx={{ overflow: "hidden", borderRadius: 2 }}>
             <CardMedia
               component="img"
-              image="https://via.placeholder.com/400x300?text=Restaurant+Ambiance"
-              alt="Restaurant Ambiance"
+              image="https://via.placeholder.com/400x300?text=Taj+Restaurant+Ambiance"
+              alt="Taj Restaurant Ambiance"
+              sx={{ width: "100%", height: "auto" }}
             />
           </Paper>
         </Grid>
@@ -75,8 +70,9 @@ const About = () => {
           <Paper sx={{ overflow: "hidden", borderRadius: 2 }}>
             <CardMedia
               component="img"
-              image="https://via.placeholder.com/400x300?text=Delicious+Food"
-              alt="Delicious Food"
+              image="https://via.placeholder.com/400x300?text=Authentic+Indian+Cuisine"
+              alt="Authentic Indian Cuisine"
+              sx={{ width: "100%", height: "auto" }}
             />
           </Paper>
         </Grid>
@@ -84,28 +80,28 @@ const About = () => {
           <Paper sx={{ overflow: "hidden", borderRadius: 2 }}>
             <CardMedia
               component="img"
-              image="https://via.placeholder.com/400x300?text=Friendly+Service"
-              alt="Friendly Service"
+              image="https://via.placeholder.com/400x300?text=Luxury+Dining"
+              alt="Luxury Dining"
+              sx={{ width: "100%", height: "auto" }}
             />
           </Paper>
         </Grid>
       </Grid>
 
       {/* Meet Our Team Section */}
-      <Box sx={{ marginTop: 4 }}>
+      <Box sx={{ marginTop: 6 }}>
         <SectionTitle variant="h5" align="center">
           Meet Our Team
         </SectionTitle>
-        <Typography variant="body1" paragraph align="center" color="textSecondary">
-          Our team is the heart of our restaurant. From our talented chefs to our friendly servers, each member of our staff is dedicated to providing the best possible experience for you. 
-          We take pride in creating a warm, welcoming environment where you feel like part of the family.
+        <Typography variant="body1" paragraph align="center" color="textSecondary" sx={{ fontSize: "1.1rem", lineHeight: 1.8 }}>
+          The heart of Taj Restaurant is our dedicated team, which includes world-class chefs, friendly staff, and exceptional hospitality professionals. Our team works tirelessly to ensure that every guest experiences the best of what we offer, combining luxury with warmth.
         </Typography>
       </Box>
 
       {/* Call to Action */}
-      <Box sx={{ marginTop: 4, textAlign: "center" }}>
-        <Button variant="contained" color="primary" href="/contact" size="large">
-          Contact Us
+      <Box sx={{ marginTop: 6, textAlign: "center" }}>
+        <Button variant="contained" color="primary" href="/contact" size="large" sx={{ padding: "12px 32px", fontSize: "1rem" }}>
+          Get in Touch
         </Button>
       </Box>
     </StyledContainer>
