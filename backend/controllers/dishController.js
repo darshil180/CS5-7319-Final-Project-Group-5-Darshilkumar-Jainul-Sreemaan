@@ -41,44 +41,50 @@ exports.addDishes = async (req, res) => {
   }
 };
 
-// Get all dishes with optional pagination and filtering
 exports.getAllDishes = async (req, res) => {
-  try {
-    const { category, page = 1, limit = 10, search } = req.query;
-    const query = {};
-
-    if (category) {
-      query.category = category;
+    try {
+      const { category, page = 1, limit = 16, search } = req.query;
+      const query = {};
+  
+      // Apply category filter if provided
+      if (category) {
+        query.category = category;
+      }
+  
+      // Apply search filter if provided
+      if (search) {
+        query.$or = [
+          { name: { $regex: search, $options: "i" } },
+          { description: { $regex: search, $options: "i" } },
+        ];
+      }
+  
+      // Fetch all dishes based on the query (no pagination yet)
+      const allDishes = await Dish.find(query);
+  
+      // Calculate the total count of matching dishes
+      const totalCount = allDishes.length;
+  
+      // Apply pagination
+      const pageInt = parseInt(page) || 1;
+      const limitInt = parseInt(limit) || 15;
+  
+      const dishes = allDishes.slice((pageInt - 1) * limitInt, pageInt * limitInt);
+  
+      res.status(200).json({
+        msg: "Dishes retrieved successfully",
+        totalCount,
+        currentPage: pageInt,
+        totalPages: Math.ceil(totalCount / limitInt),
+        data: dishes,
+      });
+    } catch (error) {
+      console.error("Error retrieving dishes:", error);
+      res.status(500).json({ msg: "Server error" });
     }
-
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
-      ];
-    }
-
-    const pageInt = parseInt(page) || 1;
-    const limitInt = parseInt(limit) || 10;
-
-    const dishes = await Dish.find(query)
-      .limit(limitInt)
-      .skip((pageInt - 1) * limitInt);
-
-    const totalCount = await Dish.countDocuments(query);
-
-    res.status(200).json({
-      msg: "Dishes retrieved successfully",
-      totalCount,
-      currentPage: pageInt,
-      totalPages: Math.ceil(totalCount / limitInt),
-      data: dishes,
-    });
-  } catch (error) {
-    console.error("Error retrieving dishes:", error);
-    res.status(500).json({ msg: "Server error" });
-  }
-};
+  };
+  
+  
 
 // Get a single dish by ID
 exports.getDishById = async (req, res) => {
