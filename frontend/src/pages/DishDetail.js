@@ -9,6 +9,10 @@ import {
   CardMedia,
   CardContent,
   Button,
+  useTheme,
+  Grid,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import axios from "axios";
 
@@ -16,6 +20,8 @@ const DishDetail = () => {
   const { id } = useParams();
   const [dish, setDish] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [addedToCart, setAddedToCart] = useState(false); // New state to handle button feedback
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchDishDetails = async () => {
@@ -46,7 +52,8 @@ const DishDetail = () => {
           },
         }
       );
-      alert("Dish added to cart!");
+      setAddedToCart(true); // Set the feedback state to true
+      setTimeout(() => setAddedToCart(false), 2000); // Hide the feedback after 2 seconds
     } catch (error) {
       console.error("Error adding to cart:", error);
       alert("Failed to add to cart.");
@@ -71,50 +78,71 @@ const DishDetail = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Card sx={{ display: "flex", flexDirection: "row", boxShadow: 3 }}>
-        <Box
-          sx={{
-            flex: 1,
-            maxWidth: "50%",
-          }}
-        >
+      <Grid container spacing={4}>
+        {/* Dish Image Section */}
+        <Grid item xs={12} md={6}>
           <CardMedia
             component="img"
             sx={{
               width: "100%",
-              height: "100%",
-              objectFit: "cover",
+              height: 300,
+              objectFit: "cover", // Ensure image is well-cropped
+              borderRadius: 2, // Add rounded corners
             }}
             image={dish.imageUrl || "https://via.placeholder.com/400"}
             alt={dish.name}
           />
-        </Box>
-        <CardContent sx={{ flex: 1, maxWidth: "50%" }}>
-          <Typography variant="h3" sx={{ fontWeight: "bold" }}>
-            {dish.name}
-          </Typography>
-          <Typography variant="h6" color="textSecondary" sx={{ mt: 1 }}>
-            Category: {dish.category}
-          </Typography>
-          <Typography variant="body1" sx={{ my: 2 }}>
-            {dish.description}
-          </Typography>
-          <Typography variant="h5" color="primary">
-            ${dish.price}
-          </Typography>
-          <Button
-            onClick={addToCart}
-            sx={{
-              mt: 2,
-              backgroundColor: "#1976d2",
-              color: "white",
-              "&:hover": { backgroundColor: "#1565c0" },
-            }}
-          >
-            Add to Cart
-          </Button>
-        </CardContent>
-      </Card>
+        </Grid>
+
+        {/* Dish Details Section */}
+        <Grid item xs={12} md={6}>
+          <CardContent>
+            <Typography variant="h3" sx={{ fontWeight: "bold" }}>
+              {dish.name}
+            </Typography>
+            <Typography variant="h6" color="textSecondary" sx={{ mt: 1 }}>
+              Category: {dish.category}
+            </Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              {dish.description}
+            </Typography>
+            <Typography variant="h5" color="primary" sx={{ mb: 2 }}>
+              ${dish.price}
+            </Typography>
+
+            <Button
+              onClick={addToCart}
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                color: "white",
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.dark, // Change color on hover
+                },
+                "&:active": {
+                  transform: "scale(0.98)", // Button shrink effect when clicked
+                },
+                borderRadius: 2,
+                padding: "10px 20px",
+                fontWeight: "bold",
+                transition: "all 0.2s ease", // Smooth transition for hover/active states
+              }}
+            >
+              {addedToCart ? "Added!" : "Add to Cart"} {/* Button text changes after adding */}
+            </Button>
+
+            {/* Snackbar notification for added to cart feedback */}
+            <Snackbar
+              open={addedToCart}
+              autoHideDuration={2000}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+              <Alert severity="success" sx={{ width: "100%" }}>
+                Dish added to cart!
+              </Alert>
+            </Snackbar>
+          </CardContent>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
