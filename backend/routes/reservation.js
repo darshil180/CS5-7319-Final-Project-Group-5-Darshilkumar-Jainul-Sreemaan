@@ -1,11 +1,11 @@
 const express = require("express");
-const authMiddleware = require("../middleware/auth"); // Middleware to check if the user is authenticated
+const authMiddleware = require("../middleware/auth");
 const {
   getReservations,
   createReservation,
   getReservationById,
   updateReservation,
-  cancelReservation
+  cancelReservation,
 } = require("../controllers/reservationController");
 
 const router = express.Router();
@@ -14,20 +14,12 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // Routes related to reservations
-router
-  .route("/") 
-  // Get all reservations for the authenticated user
-  .get(getReservations) 
-  // Create a new reservation
-  .post(createReservation);
+router.route("/").get(getReservations).post(createReservation);
 
 router
-  .route("/:id") 
-  // Get a reservation by its ID
+  .route("/:id")
   .get(getReservationById)
-  // Update an existing reservation by its ID
-  .put(updateReservation) 
-  // Delete a reservation by its ID
+  .put(updateReservation)
   .delete(cancelReservation);
 
 module.exports = router;

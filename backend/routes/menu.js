@@ -141,32 +141,4 @@ router.get("/dishes", async (req, res) => {
   }
 });
 
-// router.delete('/dishes/:id', authMiddleware, async (req, res) => {
-//     try {
-//         const dishId = req.params.id;
-
-//         // Check if the dishId is a valid MongoDB ObjectId
-//         if (!mongoose.Types.ObjectId.isValid(dishId)) {
-//             return res.status(400).json({ msg: 'Invalid dish ID format' });
-//         }
-
-//         const dish = await Dish.findById(dishId);
-//         if (!dish) {
-//             return res.status(404).json({ msg: 'Dish not found' });
-//         }
-
-//         await dish.remove();
-
-//         res.status(200).json({
-//             msg: 'Dish deleted successfully',
-//             data: {
-//                 _id: dish._id,
-//                 name: dish.name
-//             }
-//         });
-//     } catch (error) {
-//         res.status(500).json({ msg: 'Server error' });
-//     }
-// });
-
 module.exports = router;

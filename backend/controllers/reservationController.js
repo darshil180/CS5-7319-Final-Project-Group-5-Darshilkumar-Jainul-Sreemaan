@@ -1,7 +1,13 @@
 const Reservation = require("../models/Reservation");
 
 // Helper function to check time conflict
-const checkTimeConflict = async (roomType, floor, startTime, endTime, excludeId = null) => {
+const checkTimeConflict = async (
+  roomType,
+  floor,
+  startTime,
+  endTime,
+  excludeId = null
+) => {
   const query = {
     roomType,
     floor, // Include floor in the conflict check
@@ -36,10 +42,21 @@ exports.getReservations = async (req, res) => {
 
     // Send appropriate response based on result
     if (!reservations.length) {
-      return sendResponse(res, 404, false, "No reservations found for this user");
+      return sendResponse(
+        res,
+        404,
+        false,
+        "No reservations found for this user"
+      );
     }
 
-    sendResponse(res, 200, true, "Reservations retrieved successfully", reservations);
+    sendResponse(
+      res,
+      200,
+      true,
+      "Reservations retrieved successfully",
+      reservations
+    );
   } catch (err) {
     console.error("Error retrieving reservations:", err);
     sendResponse(res, 500, false, "Server error");
@@ -57,9 +74,19 @@ exports.createReservation = async (req, res) => {
     }
 
     // Check for time conflict before creating reservation
-    const conflict = await checkTimeConflict(roomType, floor, new Date(startTime), new Date(endTime));
+    const conflict = await checkTimeConflict(
+      roomType,
+      floor,
+      new Date(startTime),
+      new Date(endTime)
+    );
     if (conflict) {
-      return sendResponse(res, 400, false, "Time conflict: Another reservation exists during this period.");
+      return sendResponse(
+        res,
+        400,
+        false,
+        "Time conflict: Another reservation exists during this period."
+      );
     }
 
     // Create reservation and save it
@@ -74,7 +101,13 @@ exports.createReservation = async (req, res) => {
     });
 
     await reservation.save();
-    sendResponse(res, 201, true, "Reservation created successfully!", reservation);
+    sendResponse(
+      res,
+      201,
+      true,
+      "Reservation created successfully!",
+      reservation
+    );
   } catch (error) {
     console.error("Error creating reservation:", error);
     sendResponse(res, 500, false, "Server error");
@@ -85,15 +118,23 @@ exports.createReservation = async (req, res) => {
 exports.getReservationById = async (req, res) => {
   try {
     const reservationId = req.params.id;
-    
-    const reservation = await Reservation.findById(reservationId)
-      .populate("user", "name email");
+
+    const reservation = await Reservation.findById(reservationId).populate(
+      "user",
+      "name email"
+    );
 
     if (!reservation) {
       return sendResponse(res, 404, false, "Reservation not found");
     }
 
-    sendResponse(res, 200, true, "Reservation retrieved successfully", reservation);
+    sendResponse(
+      res,
+      200,
+      true,
+      "Reservation retrieved successfully",
+      reservation
+    );
   } catch (error) {
     console.error("Error retrieving reservation:", error);
     sendResponse(res, 500, false, "Server error");
@@ -112,9 +153,20 @@ exports.updateReservation = async (req, res) => {
     }
 
     // Validate time conflict for updated reservation
-    const conflict = await checkTimeConflict(roomType, floor, new Date(startTime), new Date(endTime), reservationId);
+    const conflict = await checkTimeConflict(
+      roomType,
+      floor,
+      new Date(startTime),
+      new Date(endTime),
+      reservationId
+    );
     if (conflict) {
-      return sendResponse(res, 400, false, "Time conflict: Another reservation exists during this period.");
+      return sendResponse(
+        res,
+        400,
+        false,
+        "Time conflict: Another reservation exists during this period."
+      );
     }
 
     // Update reservation with new details
@@ -126,7 +178,13 @@ exports.updateReservation = async (req, res) => {
     existingReservation.note = note;
 
     await existingReservation.save();
-    sendResponse(res, 200, true, "Reservation updated successfully!", existingReservation);
+    sendResponse(
+      res,
+      200,
+      true,
+      "Reservation updated successfully!",
+      existingReservation
+    );
   } catch (error) {
     console.error("Error updating reservation:", error);
     sendResponse(res, 500, false, "Server error");
@@ -145,7 +203,12 @@ exports.cancelReservation = async (req, res) => {
 
     // Check if the user trying to cancel is the owner of the reservation
     if (reservation.user.toString() !== req.user.toString()) {
-      return sendResponse(res, 403, false, "You are not authorized to cancel this reservation");
+      return sendResponse(
+        res,
+        403,
+        false,
+        "You are not authorized to cancel this reservation"
+      );
     }
 
     // Delete the reservation
