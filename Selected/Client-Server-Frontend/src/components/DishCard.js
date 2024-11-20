@@ -11,7 +11,7 @@ const DishCard = ({ dish }) => {
         <CardMedia
           component="img"
           height="200"
-          image={dish.imageUrl}
+          image={require(`../assets/DishImages/${dish.imageUrl}`)}
           alt={dish.name}
           sx={{ objectFit: 'cover' }}
         />

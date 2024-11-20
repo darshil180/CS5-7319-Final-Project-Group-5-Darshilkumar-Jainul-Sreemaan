@@ -177,7 +177,7 @@ const CartPage = () => {
                   <Grid item xs={3}>
                     <Box
                       component="img"
-                      src={item.dish.imageUrl || "https://via.placeholder.com/100"}
+                      src={require(`../assets/DishImages/${item.dish.imageUrl}`) || "https://via.placeholder.com/100"}
                       alt={item.dish.name}
                       sx={{
                         width: "100%",

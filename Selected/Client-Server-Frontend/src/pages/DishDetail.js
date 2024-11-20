@@ -89,7 +89,7 @@ const DishDetail = () => {
               objectFit: "cover", // Ensure image is well-cropped
               borderRadius: 2, // Add rounded corners
             }}
-            image={dish.imageUrl || "https://via.placeholder.com/400"}
+            image={require(`../assets/DishImages/${dish.imageUrl}`) || "https://via.placeholder.com/400"}
             alt={dish.name}
           />
         </Grid>

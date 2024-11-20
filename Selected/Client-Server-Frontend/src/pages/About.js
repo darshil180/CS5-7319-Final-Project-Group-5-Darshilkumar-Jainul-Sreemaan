@@ -60,7 +60,7 @@ const About = () => {
           <Paper sx={{ overflow: "hidden", borderRadius: 2 }}>
             <CardMedia
               component="img"
-              image="https://via.placeholder.com/400x300?text=Taj+Restaurant+Ambiance"
+              image={require(`../assets/tajImages/taj1.jpeg`)}
               alt="Taj Restaurant Ambiance"
               sx={{ width: "100%", height: "auto" }}
             />
@@ -70,7 +70,7 @@ const About = () => {
           <Paper sx={{ overflow: "hidden", borderRadius: 2 }}>
             <CardMedia
               component="img"
-              image="https://via.placeholder.com/400x300?text=Authentic+Indian+Cuisine"
+              image={require(`../assets/tajImages/taj2.jpeg`)}
               alt="Authentic Indian Cuisine"
               sx={{ width: "100%", height: "auto" }}
             />
@@ -80,7 +80,7 @@ const About = () => {
           <Paper sx={{ overflow: "hidden", borderRadius: 2 }}>
             <CardMedia
               component="img"
-              image="https://via.placeholder.com/400x300?text=Luxury+Dining"
+              image={require(`../assets/tajImages/taj3.jpeg`)}
               alt="Luxury Dining"
               sx={{ width: "100%", height: "auto" }}
             />
