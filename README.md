@@ -97,8 +97,6 @@ The Client-Server Architecture was chosen for this project because:
 
 ## Technology Stack
 
-## Technology Stack  
-
 | **Component**       | **Technology**         |  
 |---------------------|------------------------|  
 | **Frontend**        | React.js               |  
